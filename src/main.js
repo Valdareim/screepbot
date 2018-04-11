@@ -10,7 +10,7 @@ module.exports.loop = function () {
     spawner.spawnAsNeeded('Spawn1');
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
-        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == role.name);
+        var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
         if(harvesters.length < 1 || creep.memory.role == 'harvester') {
             roleHarvester.run(creep);
         }
