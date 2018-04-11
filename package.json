@@ -1,0 +1,23 @@
+{
+  "name": "screepbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Valdareim/screepbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Valdareim/screepbot/issues"
+  },
+  "homepage": "https://github.com/Valdareim/screepbot#readme"
+}
