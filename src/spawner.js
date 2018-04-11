@@ -21,13 +21,21 @@ var spawner = {
             amount: 2
         }
         ],
+    cleanMemory: function() {
+        for(var name in Memory.creeps) {
+            if(!Game.creeps[name]) {
+                delete Memory.creeps[name];
+                console.log('Clearing non-existing creep memory:', name);
+            }
+        }
+    },
     spawnAsNeeded: function(roomName) {
         for ( var role of this.roles) { 
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == role.name);
             console.log(`${role.name}:` + harvesters.length);
             
             if(harvesters.length < role.amount) {
-                var newName = `${role.name}` + harvesters.length+1;
+                var newName = `${role.name}` + Game.time;
                 console.log('Spawning new creep: ' + newName);
                 Game.spawns[roomName].spawnCreep([WORK,CARRY,MOVE], newName, 
                     {memory: {role: role.name}});

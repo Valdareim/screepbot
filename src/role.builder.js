@@ -24,7 +24,7 @@ var roleBuilder = {
 	        var storage = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
-                                structure.structureType == STRUCTURE_SPAWN) && structure.energy > 200;
+                                structure.structureType == STRUCTURE_SPAWN) && structure.energy - creep.carryCapacity > 200;
                     }
             });
             if (storage === null) {
