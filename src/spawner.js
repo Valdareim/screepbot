@@ -13,7 +13,7 @@ var spawner = {
                 role: 'harvester',
                 variant: 'small'
              },
-            amount: 2,
+            amount: 0,
             build: [WORK,CARRY,MOVE]
         }, 
         {
@@ -21,7 +21,7 @@ var spawner = {
                 role: 'harvester',
                 variant: 'medium'
             },
-            amount: 1,
+            amount: 3,
             build: [WORK,WORK,CARRY,CARRY,MOVE,MOVE]
         },
         {
@@ -29,7 +29,7 @@ var spawner = {
                 role: 'builder',
                 variant: 'small'
             },
-            amount: 2,
+            amount: 3,
             build: [WORK,CARRY,MOVE]
         },
         {
@@ -37,7 +37,7 @@ var spawner = {
                 role: 'upgrader',
                 variant: 'small'
             },
-            amount: 2,
+            amount: 3,
             build: [WORK,CARRY,MOVE]
         }
         ],
