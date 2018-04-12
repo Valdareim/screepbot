@@ -7,6 +7,7 @@ var spawner = require('spawner');
 module.exports.loop = function () {
 
     //towers.defend('SIMULATION ROOM');
+    spawner.cleanMemory();
     spawner.spawnAsNeeded('Spawn1');
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];

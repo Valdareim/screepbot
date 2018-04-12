@@ -54,13 +54,6 @@ var spawner = {
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == unit.type.role && creep.memory.variant == unit.type.variant);
             console.log(`${unit.type.role}(${unit.type.variant}):` + harvesters.length);
             
-            if(harvesters.length < unit.amount) {
-                var newName = `${unit.type.variant}${unit.type.role}` + Game.time;
-                console.log('Spawning new creep: ' + newName);
-                Game.spawns[roomName].spawnCreep(unit.build, newName, 
-                    {memory: unit.type} );
-            }
-            
             if(Game.spawns[roomName].spawning) { 
                 var spawningCreep = Game.creeps[Game.spawns[roomName].spawning.name];
                 Game.spawns[roomName].room.visual.text(
@@ -68,7 +61,14 @@ var spawner = {
                     Game.spawns[roomName].pos.x + 1, 
                     Game.spawns[roomName].pos.y, 
                     {align: 'left', opacity: 0.8});
+            } else if(harvesters.length < unit.amount) {
+                var newName = `${unit.type.variant}${unit.type.role}` + Game.time;
+                console.log('Spawning new creep: ' + newName);
+                Game.spawns[roomName].spawnCreep(unit.build, newName, 
+                    {memory: unit.type} );
             }
+            
+            
         }
     }
 };
