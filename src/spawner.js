@@ -7,18 +7,38 @@
  * mod.thing == 'a thing'; // true
  */
 var spawner = {
-    roles: [
+    units: [
         {
-            name: 'harvester',
-            amount: 2
+            type: {
+                role: 'harvester',
+                variant: 'small'
+             },
+            amount: 2,
+            build: [WORK,CARRY,MOVE]
+        }, 
+        {
+            type: {
+                role: 'harvester',
+                variant: 'medium'
+            },
+            amount: 1,
+            build: [WORK,WORK,CARRY,CARRY,MOVE,MOVE]
         },
         {
-            name: 'builder',
-            amount: 2
+            type: {
+                role: 'builder',
+                variant: 'small'
+            },
+            amount: 2,
+            build: [WORK,CARRY,MOVE]
         },
         {
-            name: 'upgrader',
-            amount: 2
+            type: {
+                role: 'upgrader',
+                variant: 'small'
+            },
+            amount: 2,
+            build: [WORK,CARRY,MOVE]
         }
         ],
     cleanMemory: function() {
@@ -30,21 +50,21 @@ var spawner = {
         }
     },
     spawnAsNeeded: function(roomName) {
-        for ( var role of this.roles) { 
-            var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == role.name);
-            console.log(`${role.name}:` + harvesters.length);
+        for ( var unit of this.units) { 
+            var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == unit.type.role && creep.memory.variant == unit.type.variant);
+            console.log(`${unit.type.role}(${unit.type.variant}):` + harvesters.length);
             
-            if(harvesters.length < role.amount) {
-                var newName = `${role.name}` + Game.time;
+            if(harvesters.length < unit.amount) {
+                var newName = `${unit.type.variant}${unit.type.role}` + Game.time;
                 console.log('Spawning new creep: ' + newName);
-                Game.spawns[roomName].spawnCreep([WORK,CARRY,MOVE], newName, 
-                    {memory: {role: role.name}});
+                Game.spawns[roomName].spawnCreep(unit.build, newName, 
+                    {memory: unit.type} );
             }
             
             if(Game.spawns[roomName].spawning) { 
                 var spawningCreep = Game.creeps[Game.spawns[roomName].spawning.name];
                 Game.spawns[roomName].room.visual.text(
-                    '🛠️' + spawningCreep.memory.role,
+                    '🛠️' + spawningCreep.memory.role+ spawningCreep.memory.variant,
                     Game.spawns[roomName].pos.x + 1, 
                     Game.spawns[roomName].pos.y, 
                     {align: 'left', opacity: 0.8});
