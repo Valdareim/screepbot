@@ -6,7 +6,6 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
-        var targets;
 
         if (creep.memory.state != this.STATE_GATHERING && creep.carry.energy == 0) {
             creep.memory.state = this.STATE_GATHERING;
@@ -17,31 +16,34 @@ var roleBuilder = {
             const repairTargets = creep.room.find(FIND_STRUCTURES, {
                 filter: object => object.hits < object.hitsMax
             });
+            repairTargets.sort((a,b) => a.hits - b.hits);
 
             if (repairTargets > 0) {
                 creep.memory.state = this.STATE_REPAIRING
-                targets = repairTargets;
+                creep.memory.targetId = repairTargets[0].id;
                 creep.say('repair');
             } else if (buildTargets.length > 0) {
                 creep.memory.state = this.STATE_BUILDING;
-                targets = buildTargets;
+                creep.memory.targetId = buildTargets[0].id;
                 creep.say('build');
             }
         } else if ((creep.memory.state != this.STATE_GATHERING && creep.memory.state != this.STATE_REPAIRING && creep.memory.state != this.STATE_BUILDING) ||
-                    creep.memory.state != this.STATE_GATHERING && targets === undefined){
+            creep.memory.state != this.STATE_GATHERING && creep.memory.targetId === undefined) {
             creep.memory.state = this.STATE_GATHERING;
-            creep.say ('oops, getting energy');
+            creep.say('oops, getting energy');
         }
 
         switch (creep.memory.state) {
             case this.STATE_BUILDING:
-                if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+                var target = Game.getObjectById(creep.memory.targetId);
+                if (creep.build(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
                 }
                 break;
             case this.STATE_REPAIRING:
-                if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+                var target = Game.getObjectById(creep.memory.targetId);
+                if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
                 }
                 break;
             case this.STATE_GATHERING:
