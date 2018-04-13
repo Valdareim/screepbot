@@ -24,7 +24,7 @@ var roleBuilder = {
                 creep.memory.state = this.STATE_BUILDING;
                 creep.say('build');
             }
-        } else {
+        } else if (creep.memory.state != this.STATE_GATHERING && creep.memory.state != this.STATE_REPAIRING && creep.memory.state != this.STATE_BUILDING){
             creep.memory.state = this.STATE_GATHERING;
             creep.say ('oops, getting energy');
         }
