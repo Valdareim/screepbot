@@ -44,6 +44,7 @@ var roleBuilder = {
                 var target = Game.getObjectById(creep.memory.targetId);
                 if (creep.repair(target) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
+                    creep.moveTo(target, { visualizePathStyle: { stroke: '#ffffff' } });
                 }
                 break;
             case this.STATE_GATHERING:
