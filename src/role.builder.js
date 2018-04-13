@@ -41,7 +41,7 @@ var roleBuilder = {
                 }
                 break;
             case this.STATE_GATHERING:
-                this.getEnergy();
+                this.getEnergy(creep);
                 break;
         }
     },
