@@ -6,6 +6,7 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
+        var targets;
 
         if (creep.memory.state != this.STATE_GATHERING && creep.carry.energy == 0) {
             creep.memory.state = this.STATE_GATHERING;
@@ -19,9 +20,11 @@ var roleBuilder = {
 
             if (repairTargets > 0) {
                 creep.memory.state = this.STATE_REPAIRING
+                targets = repairTargets;
                 creep.say('repair');
             } else if (buildTargets.length > 0) {
                 creep.memory.state = this.STATE_BUILDING;
+                targets = buildTargets;
                 creep.say('build');
             }
         } else if (creep.memory.state != this.STATE_GATHERING && creep.memory.state != this.STATE_REPAIRING && creep.memory.state != this.STATE_BUILDING){
