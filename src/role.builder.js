@@ -1,4 +1,4 @@
-import harvest from "role.harvest";
+var harvest = require('role.harvester');
 var roleBuilder = {
     STATE_BUILDING: 'building',
     STATE_REPAIRING: 'repairing',
