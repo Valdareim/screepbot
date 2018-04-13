@@ -1,43 +1,64 @@
+import harvest from "role.harvest";
 var roleBuilder = {
+    STATE_BUILDING: 'building',
+    STATE_REPAIRING: 'repairing',
+    STATE_GATHERING: 'gathering',
 
     /** @param {Creep} creep **/
-    run: function(creep) {
+    run: function (creep) {
 
-	    if(creep.memory.building && creep.carry.energy == 0) {
-            creep.memory.building = false;
-            creep.say('getting');
-	    }
-	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-	        creep.memory.building = true;
-	        creep.say('🚧 build');
-	    }
+        if (creep.memory.state != this.STATE_GATHERING && creep.carry.energy == 0) {
+            creep.memory.state = this.STATE_GATHERING;
+            creep.say('get energy');
+        } else if (creep.memory.state == this.STATE_GATHERING && creep.carry.energy == creep.carryCapacity) {
 
-	    if(creep.memory.building) {
-	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-            if(targets.length) {
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                }
-            }
-	    }
-	    else {
-	        var storage = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_EXTENSION) && structure.energy - creep.carryCapacity > 200;
-                    }
+            const buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
+            const repairTargets = creep.room.find(FIND_STRUCTURES, {
+                filter: object => object.hits < object.hitsMax
             });
-            if (storage === null) {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES);
-                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-            } else {
-                if (storage.transferEnergy(creep) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+
+            if (repairTargets > 0) {
+                creep.memory.state = this.STATE_REPAIRING
+                creep.say('repair');
+            } else if (buildTargets.length > 0) {
+                creep.memory.state = this.STATE_BUILDING;
+                creep.say('build');
             }
-	    }
-	}
+        } else {
+            creep.memory.state = this.STATE_GATHERING;
+            creep.say ('oops, getting energy');
+        }
+
+        switch (creep.memory.state) {
+            case this.STATE_BUILDING:
+                if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+                }
+                break;
+            case this.STATE_REPAIRING:
+                if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[0]);
+                }
+                break;
+            case this.STATE_GATHERING:
+                this.getEnergy();
+                break;
+        }
+    },
+    getEnergy: function (creep) {
+        var storage = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION) && structure.energy - creep.carryCapacity > 200;
+            }
+        });
+        if (storage === null) {
+            harvest.harvest(creep);
+        } else {
+            if (storage.transferEnergy(creep) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, { visualizePathStyle: { stroke: '#ffffff' } });
+            }
+        }
+    }
 };
 
-module.exports = roleBuilder;
+export default roleBuilder;
