@@ -61,4 +61,4 @@ var roleBuilder = {
     }
 };
 
-export default roleBuilder;
+module.exports = roleBuilder;
