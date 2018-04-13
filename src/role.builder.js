@@ -27,7 +27,8 @@ var roleBuilder = {
                 targets = buildTargets;
                 creep.say('build');
             }
-        } else if (creep.memory.state != this.STATE_GATHERING && creep.memory.state != this.STATE_REPAIRING && creep.memory.state != this.STATE_BUILDING){
+        } else if ((creep.memory.state != this.STATE_GATHERING && creep.memory.state != this.STATE_REPAIRING && creep.memory.state != this.STATE_BUILDING) ||
+                    creep.memory.state != this.STATE_GATHERING && targets === undefined){
             creep.memory.state = this.STATE_GATHERING;
             creep.say ('oops, getting energy');
         }
