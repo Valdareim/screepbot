@@ -6,7 +6,7 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
-
+        var targets;
         if (creep.memory.state != this.STATE_GATHERING && creep.carry.energy == 0) {
             creep.memory.state = this.STATE_GATHERING;
             creep.say('get energy');
@@ -16,9 +16,9 @@ var roleBuilder = {
             const repairTargets = creep.room.find(FIND_STRUCTURES, {
                 filter: object => object.hits < object.hitsMax
             });
-            repairTargets.sort((a,b) => a.hits - b.hits);
+            repairTargets.sort((a, b) => a.hits - b.hits);
 
-            if (repairTargets > 0) {
+            if (repairTargets.length > 0) {
                 creep.memory.state = this.STATE_REPAIRING
                 creep.memory.targetId = repairTargets[0].id;
                 creep.say('repair');
