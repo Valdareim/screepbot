@@ -7,7 +7,7 @@ var roleHarvester = {
             creep.say('Harvest');
         }
         else {
-            this.storeEnergy (creep);
+            this.storeEnergy(creep);
             creep.say('Store');
         }
     },
@@ -20,17 +20,24 @@ var roleHarvester = {
     },
 
     storeEnergy: function (creep) {
-        var targets = creep.room.find(FIND_STRUCTURES, {
+        var priority = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
-                return ((structure.structureType == STRUCTURE_EXTENSION ||
+                return (structure.structureType == STRUCTURE_EXTENSION ||
                     structure.structureType == STRUCTURE_SPAWN ||
-                    structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity) || 
-                    ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
+                    structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
             }
         });
-        if (targets.length > 0) {
-            if (creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(targets[0], { visualizePathStyle: { stroke: '#ffffff' } });
+        const secondary = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return ((structure.structureType == STRUCTURE_CONTAINER) && _.sum(structure.store) < structure.storeCapacity);
+            }
+        })
+        if (priority.length <= 0 ) {
+            priority = secondary;
+        }
+        if (priority.length > 0) {
+            if (creep.transfer(priority[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(priority[0], { visualizePathStyle: { stroke: '#ffffff' } });
             }
         }
     }
