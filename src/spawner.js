@@ -87,6 +87,16 @@ var spawner = {
             
             
         }
+    },
+    renewNearby: function(roomName) {
+        if (!Game.spawns[roomName].spawning) {
+            const spawn = Game.spawns[roomName];
+            const targets = spawn.pos.findClosestByRange(FIND_CREEPS, {
+                filter: object => object.ticksToLive < 1400
+            });
+            spawn.room.visual.text (`Renewing ${targets[0].variant} - ${target[0].role}`)
+            spawn.renewCreep(targets[0]);
+        }
     }
 };
 

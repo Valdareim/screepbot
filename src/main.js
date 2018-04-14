@@ -9,6 +9,7 @@ module.exports.loop = function () {
     //towers.defend('SIMULATION ROOM');
     spawner.cleanMemory();
     spawner.spawnAsNeeded('Spawn1');
+    spawner.renewNearby('Spawn1');
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
