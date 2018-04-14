@@ -21,7 +21,7 @@ var spawner = {
                 role: 'harvester',
                 variant: 'medium'
             },
-            amount: 3,
+            amount: 5,
             build: [WORK,WORK,CARRY,CARRY,MOVE,MOVE]
         },
         {
