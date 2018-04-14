@@ -68,7 +68,7 @@ var spawner = {
     spawnAsNeeded: function(roomName) {
         for ( var unit of this.units) { 
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == unit.type.role && creep.memory.variant == unit.type.variant);
-            console.log(`${unit.type.role}(${unit.type.variant}):` + harvesters.length);
+            console.log(`${unit.type.role}(${unit.type.variant}): ${harvesters.length}/${unit.amount}`);
             
             if(Game.spawns[roomName].spawning) { 
                 var spawningCreep = Game.creeps[Game.spawns[roomName].spawning.name];
