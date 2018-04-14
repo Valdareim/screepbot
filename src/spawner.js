@@ -73,7 +73,7 @@ var spawner = {
             if(Game.spawns[roomName].spawning) { 
                 var spawningCreep = Game.creeps[Game.spawns[roomName].spawning.name];
                 Game.spawns[roomName].room.visual.text(
-                    '🛠️' + spawningCreep.memory.role+ spawningCreep.memory.variant,
+                    'Spawning: '+ spawningCreep.memory.role+ spawningCreep.memory.variant,
                     Game.spawns[roomName].pos.x + 1, 
                     Game.spawns[roomName].pos.y, 
                     {align: 'left', opacity: 0.8});

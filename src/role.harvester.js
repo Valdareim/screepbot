@@ -4,9 +4,11 @@ var roleHarvester = {
     run: function (creep) {
         if (creep.carry.energy < creep.carryCapacity) {
             this.harvest(creep);
+            creep.say('Harvest');
         }
         else {
             this.storeEnergy (creep);
+            creep.say('Store');
         }
     },
 
