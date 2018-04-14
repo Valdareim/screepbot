@@ -94,7 +94,7 @@ var spawner = {
             const target = spawn.pos.findClosestByRange(FIND_CREEPS, {
                 filter: object => object.ticksToLive < 1400
             });
-            if (target !== null) {
+            if (target !== null && target !== undefined) {
                 spawn.room.visual.text(`Renewing ${target.variant} - ${target.role}`);
                 spawn.renewCreep(target);
             }
