@@ -61,7 +61,7 @@ var roleBuilder = {
         if (storage === null) {
             harvest.harvest(creep);
         } else {
-            if (storage.transferEnergy(creep) == ERR_NOT_IN_RANGE) {
+            if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(storage, { visualizePathStyle: { stroke: '#ffffff' } });
             }
         }
