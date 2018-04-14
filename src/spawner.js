@@ -96,7 +96,7 @@ var spawner = {
             });
             if (target !== undefined) {
                 spawn.room.visual.text(`Renewing ${target.variant} - ${target.role}`);
-                spawn.renewCreep(targets[0]);
+                spawn.renewCreep(target);
             }
         }
     }
