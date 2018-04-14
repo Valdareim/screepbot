@@ -34,12 +34,28 @@ var spawner = {
         },
         {
             type: {
+                role: 'builder',
+                variant: 'medium'
+            },
+            amount: 1,
+            build: [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE]
+        },
+        {
+            type: {
                 role: 'upgrader',
                 variant: 'small'
             },
             amount: 3,
             build: [WORK,CARRY,MOVE]
-        }
+        },
+        {
+            type: {
+                role: 'repairer',
+                variant: 'small'
+            },
+            amount: 3,
+            build: [WORK,CARRY,MOVE]
+        },
         ],
     cleanMemory: function() {
         for(var name in Memory.creeps) {

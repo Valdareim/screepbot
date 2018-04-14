@@ -18,7 +18,7 @@ var roleBuilder = {
             });
             repairTargets.sort((a, b) => a.hits - b.hits);
 
-            if (repairTargets.length > 0) {
+            if (creep.memory.role == 'repairer' && repairTargets.length > 0) {
                 creep.memory.state = this.STATE_REPAIRING
                 creep.memory.targetId = repairTargets[0].id;
                 creep.say('repair');
