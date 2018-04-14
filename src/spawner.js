@@ -12,33 +12,33 @@ var spawner = {
             type: {
                 role: 'harvester',
                 variant: 'small'
-             },
+            },
             amount: 0,
-            build: [WORK,CARRY,MOVE]
-        }, 
+            build: [WORK, CARRY, MOVE]
+        },
         {
             type: {
                 role: 'harvester',
                 variant: 'medium'
             },
             amount: 5,
-            build: [WORK,WORK,CARRY,CARRY,MOVE,MOVE]
+            build: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
         },
         {
             type: {
                 role: 'builder',
                 variant: 'small'
             },
-            amount: 3,
-            build: [WORK,CARRY,MOVE]
+            amount: 2,
+            build: [WORK, CARRY, MOVE]
         },
         {
             type: {
                 role: 'builder',
                 variant: 'medium'
             },
-            amount: 1,
-            build: [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE]
+            amount: 2,
+            build: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE]
         },
         {
             type: {
@@ -46,7 +46,7 @@ var spawner = {
                 variant: 'small'
             },
             amount: 3,
-            build: [WORK,CARRY,MOVE]
+            build: [WORK, CARRY, MOVE]
         },
         {
             type: {
@@ -54,48 +54,50 @@ var spawner = {
                 variant: 'small'
             },
             amount: 3,
-            build: [WORK,CARRY,MOVE]
+            build: [WORK, CARRY, MOVE]
         },
-        ],
-    cleanMemory: function() {
-        for(var name in Memory.creeps) {
-            if(!Game.creeps[name]) {
+    ],
+    cleanMemory: function () {
+        for (var name in Memory.creeps) {
+            if (!Game.creeps[name]) {
                 delete Memory.creeps[name];
                 console.log('Clearing non-existing creep memory:', name);
             }
         }
     },
-    spawnAsNeeded: function(roomName) {
+    spawnAsNeeded: function (roomName) {
         console.log('----------Unit Count----------')
-        for ( var unit of this.units) { 
+        for (var unit of this.units) {
             var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == unit.type.role && creep.memory.variant == unit.type.variant);
             console.log(`${unit.type.role}(${unit.type.variant}): ${harvesters.length}/${unit.amount}`);
-            
-            if(Game.spawns[roomName].spawning) { 
+
+            if (Game.spawns[roomName].spawning) {
                 var spawningCreep = Game.creeps[Game.spawns[roomName].spawning.name];
                 Game.spawns[roomName].room.visual.text(
-                    'Spawning: '+ spawningCreep.memory.role+ spawningCreep.memory.variant,
-                    Game.spawns[roomName].pos.x + 1, 
-                    Game.spawns[roomName].pos.y, 
-                    {align: 'left', opacity: 0.8});
-            } else if(harvesters.length < unit.amount) {
+                    'Spawning: ' + spawningCreep.memory.role + spawningCreep.memory.variant,
+                    Game.spawns[roomName].pos.x + 1,
+                    Game.spawns[roomName].pos.y,
+                    { align: 'left', opacity: 0.8 });
+            } else if (harvesters.length < unit.amount) {
                 var newName = `${unit.type.variant}${unit.type.role}` + Game.time;
                 console.log('Spawning new creep: ' + newName);
-                Game.spawns[roomName].spawnCreep(unit.build, newName, 
-                    {memory: unit.type} );
+                Game.spawns[roomName].spawnCreep(unit.build, newName,
+                    { memory: unit.type });
             }
-            
-            
+
+
         }
     },
-    renewNearby: function(roomName) {
+    renewNearby: function (roomName) {
         if (!Game.spawns[roomName].spawning) {
             const spawn = Game.spawns[roomName];
-            const targets = spawn.pos.findClosestByRange(FIND_CREEPS, {
+            const target = spawn.pos.findClosestByRange(FIND_CREEPS, {
                 filter: object => object.ticksToLive < 1400
             });
-            spawn.room.visual.text (`Renewing ${targets[0].variant} - ${target[0].role}`)
-            spawn.renewCreep(targets[0]);
+            if (target !== undefined) {
+                spawn.room.visual.text(`Renewing ${target.variant} - ${target.role}`);
+                spawn.renewCreep(targets[0]);
+            }
         }
     }
 };
